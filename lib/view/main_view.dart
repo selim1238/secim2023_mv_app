@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:widget_mask/widget_mask.dart';
-
+import 'dart:io';
+import 'package:excel/excel.dart';
+import 'package:flutter/services.dart' show ByteData, rootBundle;
 import '../core/db_init/db_init.dart';
 
 class MainView extends StatefulWidget {
@@ -15,6 +20,28 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   late AnimationController _spinAnimationController;
   late AnimationController _floatingAnimationController;
   late Animation<Offset> _floatingAnimation;
+  late String selectedCity = "";
+
+  //Reads excel data with excel package
+
+  void readExcel() async {
+    ByteData data = await rootBundle.load('assets/deneme_2.xlsx');
+    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    var excel = Excel.decodeBytes(bytes);
+
+    for (var table in excel.tables.keys) {
+      print(table); //sheet Name
+      print(excel.tables[table]!.maxCols);
+      print(excel.tables[table]!.maxRows);
+      for (var row in excel.tables[table]!.rows) {
+        print(row[0]!.value);
+        print(row[1]!.value);
+        print(row[2]!.value);
+      }
+    }
+  }
+
+  //create a function that reads excel data and saves it to firestore
 
   @override
   void initState() {
@@ -114,7 +141,8 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                 padding: const EdgeInsets.fromLTRB(0, 25, 50, 0),
                 child: InkWell(
                   onTap: () {
-                    MilletvekiliInit().saveToFirestore();
+                    // MilletvekiliInit().saveToFirestore();
+                    readExcel();
                   },
                   child: Container(
                     height: 50,
