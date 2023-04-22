@@ -1,4 +1,5 @@
-# secim2023_mv_app
+
+# Seçim 2023 Milletvekili Bilgi Portalı
 
 Flutter Web kullanılarak geliştirilen 2023 Türkiye milletvekilleri seçimi için bir bilgi platformudur. Firebase veritabanı kullanılmıştır ve kaynak kodu tamamen açıktır. Veriler, kullanıcıların yardımıyla tamamlanacaktır ve bunun için bir talep formu oluşturulacaktır.
 
