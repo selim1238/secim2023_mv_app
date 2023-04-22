@@ -1,16 +1,18 @@
 # secim2023_mv_app
 
-A new Flutter project.
+Flutter Web ile geliştirdiğim, 2023 Türkiye milletvekilleri seçimi için bilgi platformu.
+Db olarak Firebase kullanılmıştır. 
+Sourcecode tamamen kullanıcılara açıktır.
+Veriler oluşan eksiklikler kullanıcıların yardımı ile tamamlanacaktır bunun için bir talep formu oluşturulacaktır.
 
-## Getting Started
+Yapılanlar.
+-Main Screen tasarımı.
+-Firebase entegrasyonu.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Yapılacaklar.
+-İnteraktif Türkiye haritası. (svg path)
+-Milletvekilleri verilerinin sisteme işlenmesi. 
+  -Şu an işlenen veri miktarı (%6)
+-Milletvekili verilerinin animasyonlu bir şekilde listelenmesi.
+-Milletvekileri verileri için card tasarımı.
+-Bug testing phase.
