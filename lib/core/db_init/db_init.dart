@@ -19,7 +19,7 @@ class MilletVekili {
   );
 }
 
-class MilletvekiliInit {
+class MilletvekiliInits {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   //Debugging

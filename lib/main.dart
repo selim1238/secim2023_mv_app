@@ -1,18 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:secim2023_mv_app/core/constants/constants.dart';
 import 'package:secim2023_mv_app/core/init/provider/state_provider.dart';
 import 'package:secim2023_mv_app/view/main_view.dart';
+import 'package:secim2023_mv_app/view/turkey_map.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: "AIzaSyBTM3I5BXeNjgnZgPahVgjRL0jSBA-5fCE",
-          authDomain: "secim2023mv.firebaseapp.com",
-          projectId: "secim2023mv",
-          storageBucket: "secim2023mv.appspot.com",
-          messagingSenderId: "506760179614",
-          appId: "1:506760179614:web:395bf4cc66765eee03f08f"));
+  await Constants().firebaseConstants;
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -29,7 +24,7 @@ class AppHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: '2023 Milletvekilleri Aday Portalı',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

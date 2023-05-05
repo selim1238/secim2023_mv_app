@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  city_picker_from_map:
+    dependency: "direct main"
+    description:
+      name: city_picker_from_map
+      sha256: fb9ebf80b15df28f5032b5182f3f37d81b60852890a5fe9b6e74d19624f5da34
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   clock:
     dependency: transitive
     description:
@@ -243,6 +251,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_timer_countdown:
+    dependency: "direct main"
+    description:
+      name: flutter_timer_countdown
+      sha256: "95afd180ad88f446e5f90615e07d7b759730d86076fcef5982afed3e07d917c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -256,6 +272,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  infinite_carousel:
+    dependency: "direct main"
+    description:
+      name: infinite_carousel
+      sha256: "4e0cf5124051c7336d406392f443bdf44b8f4e1810d1e13bd964f66af0944eda"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
+  interactable_svg:
+    dependency: "direct main"
+    description:
+      name: interactable_svg
+      sha256: "6d883a08fee9d8a4e44870ebe7f463e359abfee65f6791de5762ef727832db8c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   intl:
     dependency: transitive
     description:
@@ -360,6 +392,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.5"
+  responsive_spacing:
+    dependency: "direct main"
+    description:
+      name: responsive_spacing
+      sha256: "6548bdd2806183d258fba912e0df78276bad5bcdf36e67ddd1273b843128c713"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -397,6 +437,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  svg_path_parser:
+    dependency: transitive
+    description:
+      name: svg_path_parser
+      sha256: c0864f85efd1024e9f667ddcda10601b1199e3980fb07d63701f9b9a047bdab3
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
   term_glyph:
     dependency: transitive
     description:
@@ -453,6 +501,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  web_smooth_scroll:
+    dependency: "direct main"
+    description:
+      name: web_smooth_scroll
+      sha256: "2a4adc22e42e4045f02ecc1598885bf46adbe7ed9b05aab0a0f5df9ed071e9b6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   widget_mask:
     dependency: "direct main"
     description:

@@ -1,13 +1,23 @@
 import 'dart:math';
+import 'dart:ui';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:widget_mask/widget_mask.dart';
-import 'dart:io';
-import 'package:excel/excel.dart';
-import 'package:flutter/services.dart' show ByteData, rootBundle;
+import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
+import 'package:infinite_carousel/infinite_carousel.dart';
+import 'package:provider/provider.dart';
+import 'package:responsive_spacing/extensions/scaled_size_extension.dart';
+import 'package:responsive_spacing/widgets/spacing.dart';
+import 'package:secim2023_mv_app/core/init/provider/state_provider.dart';
+import 'package:secim2023_mv_app/view/turkey_map.dart';
+import '../core/constants/party_logos.dart';
 import '../core/db_init/db_init.dart';
+import '../main_excel.dart';
+import "./elements/masked_topograph.dart";
+import "./elements/circular_backdrop.dart";
+import "./elements/ballot_box.dart";
+import 'package:web_smooth_scroll/web_smooth_scroll.dart';
+import 'elements/welcome_titles.dart';
+import "../main_excel.dart";
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -20,31 +30,20 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   late AnimationController _spinAnimationController;
   late AnimationController _floatingAnimationController;
   late Animation<Offset> _floatingAnimation;
+  late ScrollController _scrollController;
   late String selectedCity = "";
 
+  final _carouselController = InfiniteScrollController();
+  final _animationDuration = Duration(seconds: 10);
+  late AnimationController _animationController;
+
   //Reads excel data with excel package
-
-  void readExcel() async {
-    ByteData data = await rootBundle.load('assets/deneme_2.xlsx');
-    var bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    var excel = Excel.decodeBytes(bytes);
-
-    for (var table in excel.tables.keys) {
-      print(table); //sheet Name
-      print(excel.tables[table]!.maxCols);
-      print(excel.tables[table]!.maxRows);
-      for (var row in excel.tables[table]!.rows) {
-        print(row[0]!.value);
-        print(row[1]!.value);
-        print(row[2]!.value);
-      }
-    }
-  }
 
   //create a function that reads excel data and saves it to firestore
 
   @override
   void initState() {
+    _scrollController = ScrollController();
     _spinAnimationController =
         AnimationController(vsync: this, duration: Duration(seconds: 300))
           ..repeat();
@@ -60,211 +59,258 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
       curve: Curves.linear,
     ));
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: _animationDuration,
+    );
+    _animationController.repeat();
+    _animationController.addListener(() {
+      _carouselController.animateTo(
+        _carouselController.offset + 120,
+        duration: Duration(milliseconds: 6000),
+        curve: Curves.linear,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+    var fontSizeFactor = (screenWidth + screenHeight) / 2000;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Stack(
-          children: [
-            Container(
-              height: screenHeight * 3,
-              width: screenWidth,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                Colors.white,
-                Colors.blue,
-              ], stops: [
-                0.2,
-                0.8
-              ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-            ),
-            AnimatedPositioned(
-                duration: Duration(seconds: 1),
-                curve: Curves.easeInOut,
-                height: screenWidth * 1.5,
-                width: screenWidth * 1.5,
-                right: screenWidth * -0.1,
-                top: screenWidth * -1.025,
+      body: WebSmoothScroll(
+        controller: _scrollController,
+        scrollOffset: 100,
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _scrollController,
+          scrollDirection: Axis.vertical,
+          child: Stack(
+            children: [
+              Container(
+                height: screenHeight * 3,
+                width: screenWidth,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                  Colors.white,
+                  Colors.blue,
+                ], stops: [
+                  0.2,
+                  0.8
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+              ),
+              CircularBackgroundBackdrop(
+                screenWidth: screenWidth,
+                screenHeight: screenHeight,
+              ),
+              MaskedTopographWidget(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  spinAnimationController: _spinAnimationController),
+              Padding(
+                padding: Spacing.of(context).padding.allEdgeInsets * 3,
                 child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(1500)),
-                )),
-            AnimatedPositioned(
-                duration: Duration(seconds: 1),
-                curve: Curves.easeInOut,
-                height: screenWidth * 1.5,
-                width: screenWidth * 1.5,
-                right: screenWidth * -0.1,
-                top: screenWidth * -1.05,
-                child: RotationTransition(
-                  turns: Tween(begin: 0.0, end: 1.0)
-                      .animate(_spinAnimationController),
-                  child: WidgetMask(
-                    blendMode: BlendMode.screen,
-                    mask: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(1500),
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              opacity: 0.4,
-                              image: AssetImage(
-                                "assets/topograph_bg.png",
-                              ))),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 255, 102, 0),
-                          borderRadius: BorderRadius.circular(1500)),
+                  width: screenWidth * 0.250,
+                  height: screenHeight * 0.075,
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "Seçim 2023",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22 * fontSizeFactor,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        TimerCountdown(
+                          format: CountDownTimerFormat.daysHoursMinutesSeconds,
+                          timeTextStyle: TextStyle(color: Colors.white),
+                          descriptionTextStyle: TextStyle(color: Colors.white),
+                          colonsTextStyle: TextStyle(color: Colors.white),
+                          daysDescription: "Gün",
+                          hoursDescription: "Saat",
+                          minutesDescription: "Dakika",
+                          secondsDescription: "Saniye",
+                          endTime: DateTime.parse("2023-05-14 08:00:00"),
+                        )
+                      ],
                     ),
                   ),
-                )),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(50, 25, 0, 0),
-              child: Text(
-                "Seçim 2023",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 25, 50, 0),
-                child: InkWell(
-                  onTap: () {
-                    // MilletvekiliInit().saveToFirestore();
-                    readExcel();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.white.withOpacity(0.6),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Form Gönder",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 255, 102, 0),
-                          fontSize: 20,
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: Spacing.of(context).padding.allEdgeInsets * 3,
+                  child: InkWell(
+                    onTap: () {
+                      // MilletvekiliInit().saveToFirestore();
+                      MilletvekiliInit().readExcel();
+                    },
+                    child: Container(
+                      width: screenWidth * 0.125,
+                      height: screenHeight * 0.075,
+                      child: Center(
+                        child: Container(
+                          width: screenWidth * 0.10,
+                          height: screenHeight * 0.06,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.white.withOpacity(0.6),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Form Gönder",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 255, 102, 0),
+                                fontSize: 16 * fontSizeFactor,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Container(
-                height: screenWidth * 0.4,
-                width: screenWidth * 0.5,
-                child: Center(
-                  child: Container(
-                    height: screenWidth * 0.25,
-                    width: screenWidth * 0.25,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Center(
-                        child: AnimatedBuilder(
-                            animation: _floatingAnimationController,
-                            builder: (BuildContext context, Widget? child) {
-                              return FractionalTranslation(
-                                  translation: _floatingAnimation.value,
-                                  child: Image.asset("assets/ballot_box.png"));
-                            })),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-                height: screenHeight * 0.7,
-                width: screenWidth * 0.5,
+              BallotBox(
+                  screenWidth: screenWidth,
+                  screenHeight: screenHeight,
+                  floatingAnimationController: _floatingAnimationController,
+                  floatingAnimation: _floatingAnimation),
+              Welcome_title1(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  fontSizeFactor: fontSizeFactor),
+              Welcome_title2(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  fontSizeFactor: fontSizeFactor),
+              Container(
+                height: screenHeight * 3,
+                width: screenWidth,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Container(
-                          width: screenWidth * 0.3,
-                          child: Text(
-                            "Açık Kaynak kodlu",
-                            style:
-                                TextStyle(fontSize: 35.0, color: Colors.white),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: screenWidth * 0.3,
-                          child: Text(
-                            "Kullanıcılar tarafından oluşturulmuş",
-                            style:
-                                TextStyle(fontSize: 35.0, color: Colors.white),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          width: screenWidth * 0.3,
-                          child: Text(
-                            "Milletvekili Aday Bilgi Portalı",
-                            style:
-                                TextStyle(fontSize: 35.0, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 50,
+                    //Used as a spacer
+                    Container(
+                      height: screenHeight * 1.05,
+                      child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: screenHeight * 0.2,
+                            width: screenWidth,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                      "OY PUSULASINDA YER ALACAK PARTİLER",
+                                      style: TextStyle(
+                                          fontSize: 24, color: Colors.orange)),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10, right: 10),
+                                  child: Container(
+                                    height: screenHeight * 0.14,
+                                    width: screenWidth,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            Color.fromARGB(255, 255, 255, 255)
+                                                .withOpacity(0.5),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: InfiniteCarousel.builder(
+                                      controller: _carouselController,
+                                      itemCount: 26,
+                                      itemExtent: 120,
+                                      center: true,
+                                      anchor: 0.8,
+                                      velocityFactor: 0.5,
+                                      onIndexChanged: (index) {},
+                                      axisDirection: Axis.horizontal,
+                                      loop: true,
+                                      itemBuilder:
+                                          (context, itemIndex, realIndex) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Container(
+                                            height: 100,
+                                            width: 100,
+                                            child: Image.network(PartyLogos()
+                                                .networkLogos
+                                                .elementAt(itemIndex)),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )),
                     ),
                     Container(
                       height: screenHeight * 0.1,
-                      width: screenWidth * 0.3,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Text(
-                            'DOĞRU',
-                            style:
-                                TextStyle(fontSize: 43.0, color: Colors.white),
-                          ),
-                          const SizedBox(width: 20.0, height: 100.0),
-                          DefaultTextStyle(
-                            style: const TextStyle(
-                                fontSize: 40.0,
-                                fontFamily: 'Horizon',
-                                color: Colors.white),
-                            child: AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                RotateAnimatedText('TERCİH'),
-                                RotateAnimatedText('TEMSİL'),
-                                RotateAnimatedText('MİLLETVEKİLİ'),
-                              ],
-                            ),
-                          ),
-                        ],
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          height: screenHeight * 0.1,
+                          width: screenWidth * 0.625,
+                          child: Center(child: CityNameWidget()),
+                        ),
                       ),
                     ),
+                    Container(
+                      height: screenHeight * 0.5,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          height: screenHeight * 0.4,
+                          width: screenWidth * 0.6,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width * 0.1),
+                            child: TurkeyMap(),
+                          ),
+                        ),
+                      ),
+                    )
                   ],
-                )),
-          ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class CityNameWidget extends StatelessWidget {
+  const CityNameWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<StateProvider>(
+      builder: (context, provider, state) {
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 500),
+          child: AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            child: Text(
+              provider.selectedCity,
+              style: TextStyle(
+                  color: Color.fromARGB(255, 255, 115, 0), fontSize: 38),
+            ),
+          ),
+        );
+      },
     );
   }
 }
