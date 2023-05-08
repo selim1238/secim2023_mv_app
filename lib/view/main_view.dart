@@ -1,13 +1,16 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
 import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_spacing/extensions/scaled_size_extension.dart';
 import 'package:responsive_spacing/widgets/spacing.dart';
+import 'package:secim2023_mv_app/core/constants/constants.dart';
 import 'package:secim2023_mv_app/core/init/provider/state_provider.dart';
+import 'package:secim2023_mv_app/view/state_info/state_info.dart';
 import 'package:secim2023_mv_app/view/turkey_map.dart';
 import '../core/constants/party_logos.dart';
 import '../core/db_init/db_init.dart';
@@ -73,6 +76,15 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
     });
   }
 
+  final mapSelectedStateWidget = [
+    Container(
+      height: 1,
+      width: 1,
+      color: Colors.transparent,
+    ),
+    DelayedDisplay(delay: Duration(milliseconds: 250), child: StateInfo())
+  ];
+
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
@@ -90,17 +102,13 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
           child: Stack(
             children: [
               Container(
-                height: screenHeight * 3,
-                width: screenWidth,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                  Colors.white,
-                  Colors.blue,
-                ], stops: [
-                  0.2,
-                  0.8
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-              ),
+                  height: screenHeight * 2,
+                  width: screenWidth,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Color(0xFF69C0FF), Color(0xFF0E6FA6)]))),
               CircularBackgroundBackdrop(
                 screenWidth: screenWidth,
                 screenHeight: screenHeight,
@@ -109,95 +117,136 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   spinAnimationController: _spinAnimationController),
-              Padding(
-                padding: Spacing.of(context).padding.allEdgeInsets * 3,
-                child: Container(
-                  width: screenWidth * 0.250,
-                  height: screenHeight * 0.075,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          "Seçim 2023",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22 * fontSizeFactor,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        TimerCountdown(
-                          format: CountDownTimerFormat.daysHoursMinutesSeconds,
-                          timeTextStyle: TextStyle(color: Colors.white),
-                          descriptionTextStyle: TextStyle(color: Colors.white),
-                          colonsTextStyle: TextStyle(color: Colors.white),
-                          daysDescription: "Gün",
-                          hoursDescription: "Saat",
-                          minutesDescription: "Dakika",
-                          secondsDescription: "Saniye",
-                          endTime: DateTime.parse("2023-05-14 08:00:00"),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
               Align(
                 alignment: Alignment.topRight,
                 child: Padding(
                   padding: Spacing.of(context).padding.allEdgeInsets * 3,
-                  child: InkWell(
-                    onTap: () {
-                      // MilletvekiliInit().saveToFirestore();
-                      MilletvekiliInit().readExcel();
-                    },
-                    child: Container(
-                      width: screenWidth * 0.125,
-                      height: screenHeight * 0.075,
-                      child: Center(
-                        child: Container(
-                          width: screenWidth * 0.10,
-                          height: screenHeight * 0.06,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: Colors.white.withOpacity(0.6),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Form Gönder",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 255, 102, 0),
-                                fontSize: 16 * fontSizeFactor,
+                  child: Container(
+                    width: screenWidth * 0.25,
+                    height: screenHeight * 0.3,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            width: screenWidth * 0.25,
+                            height: screenHeight * 0.15,
+                            child: Center(
+                              child: Text(
+                                "Cumhurbaşkanı ve 28. Dönem Milletvekili Genel Seçimi",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22 * fontSizeFactor,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          TimerCountdown(
+                            format:
+                                CountDownTimerFormat.daysHoursMinutesSeconds,
+                            timeTextStyle: TextStyle(color: Colors.white),
+                            descriptionTextStyle:
+                                TextStyle(color: Colors.white),
+                            colonsTextStyle: TextStyle(color: Colors.white),
+                            daysDescription: "Gün",
+                            hoursDescription: "Saat",
+                            minutesDescription: "Dakika",
+                            secondsDescription: "Saniye",
+                            endTime: DateTime.parse("2023-05-14 08:00:00"),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
-              BallotBox(
-                  screenWidth: screenWidth,
-                  screenHeight: screenHeight,
-                  floatingAnimationController: _floatingAnimationController,
-                  floatingAnimation: _floatingAnimation),
-              Welcome_title1(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  fontSizeFactor: fontSizeFactor),
-              Welcome_title2(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  fontSizeFactor: fontSizeFactor),
+              Padding(
+                padding: Spacing.of(context).padding.allEdgeInsets * 3,
+                child: Row(
+                  children: [
+                    BallotBox(
+                        screenWidth: screenWidth,
+                        screenHeight: screenHeight,
+                        floatingAnimationController:
+                            _floatingAnimationController,
+                        floatingAnimation: _floatingAnimation),
+                    WelcomeTitle(
+                        screenHeight: screenHeight,
+                        screenWidth: screenWidth,
+                        fontSizeFactor: fontSizeFactor),
+                  ],
+                ),
+              ),
               Container(
-                height: screenHeight * 3,
+                height: screenHeight * 2,
                 width: screenWidth,
                 child: Column(
                   children: [
                     //Used as a spacer
                     Container(
-                      height: screenHeight * 1.05,
+                      height: screenHeight * 1.3,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Consumer<StateProvider>(
+                          builder: (context, provider, state) {
+                            return Container(
+                              height: screenHeight * 0.6,
+                              width: screenWidth * 0.9,
+                              child: Stack(
+                                children: [
+                                  Center(child: TurkeyMap()),
+                                  Center(
+                                    child: Container(
+                                      height: screenHeight * 0.45,
+                                      width: screenWidth * 0.5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "Lütfen görüntülemek istediğiniz ili seçin",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Container(
+                                        height: screenHeight * 0.2,
+                                        width: screenWidth * 0.15,
+                                        child: Center(
+                                            child: mapSelectedStateWidget[
+                                                provider
+                                                    .mapStateWidgetStatus])),
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      height: screenHeight * 0.45,
+                                      width: screenWidth * 0.5,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 30),
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Text(
+                                            "Yeni il bilgileri eklenmeye devam etmektedir.",
+                                            style:
+                                                TextStyle(color: Colors.yellow),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: screenHeight * 0.2,
                       child: Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
@@ -210,75 +259,19 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                                   child: Text(
                                       "OY PUSULASINDA YER ALACAK PARTİLER",
                                       style: TextStyle(
-                                          fontSize: 24, color: Colors.orange)),
+                                          fontSize: 24, color: Colors.white)),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(left: 10, right: 10),
-                                  child: Container(
-                                    height: screenHeight * 0.14,
-                                    width: screenWidth,
-                                    decoration: BoxDecoration(
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255)
-                                                .withOpacity(0.5),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: InfiniteCarousel.builder(
-                                      controller: _carouselController,
-                                      itemCount: 26,
-                                      itemExtent: 120,
-                                      center: true,
-                                      anchor: 0.8,
-                                      velocityFactor: 0.5,
-                                      onIndexChanged: (index) {},
-                                      axisDirection: Axis.horizontal,
-                                      loop: true,
-                                      itemBuilder:
-                                          (context, itemIndex, realIndex) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Container(
-                                            height: 100,
-                                            width: 100,
-                                            child: Image.network(PartyLogos()
-                                                .networkLogos
-                                                .elementAt(itemIndex)),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                  child: PartyCarousel(
+                                      screenHeight: screenHeight,
+                                      screenWidth: screenWidth,
+                                      carouselController: _carouselController),
                                 )
                               ],
                             ),
                           )),
                     ),
-                    Container(
-                      height: screenHeight * 0.1,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          height: screenHeight * 0.1,
-                          width: screenWidth * 0.625,
-                          child: Center(child: CityNameWidget()),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: screenHeight * 0.5,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          height: screenHeight * 0.4,
-                          width: screenWidth * 0.6,
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width * 0.1),
-                            child: TurkeyMap(),
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               )
@@ -290,27 +283,48 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
   }
 }
 
-class CityNameWidget extends StatelessWidget {
-  const CityNameWidget({
+class PartyCarousel extends StatelessWidget {
+  const PartyCarousel({
     super.key,
-  });
+    required this.screenHeight,
+    required this.screenWidth,
+    required InfiniteScrollController carouselController,
+  }) : _carouselController = carouselController;
+
+  final double screenHeight;
+  final double screenWidth;
+  final InfiniteScrollController _carouselController;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<StateProvider>(
-      builder: (context, provider, state) {
-        return AnimatedContainer(
-          duration: Duration(milliseconds: 500),
-          child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 500),
-            child: Text(
-              provider.selectedCity,
-              style: TextStyle(
-                  color: Color.fromARGB(255, 255, 115, 0), fontSize: 38),
+    return Container(
+      height: screenHeight * 0.14,
+      width: screenWidth,
+      decoration: BoxDecoration(
+          color: Color(0xFFC0EEF2).withOpacity(0.5),
+          borderRadius: BorderRadius.circular(10)),
+      child: InfiniteCarousel.builder(
+        controller: _carouselController,
+        itemCount: 26,
+        itemExtent: 120,
+        center: true,
+        anchor: 0.8,
+        velocityFactor: 0.5,
+        onIndexChanged: (index) {},
+        axisDirection: Axis.horizontal,
+        loop: true,
+        itemBuilder: (context, itemIndex, realIndex) {
+          return Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              height: 100,
+              width: 100,
+              child:
+                  Image.network(PartyLogos().networkLogos.elementAt(itemIndex)),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

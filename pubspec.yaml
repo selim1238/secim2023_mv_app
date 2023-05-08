@@ -30,23 +30,33 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  #Core
   firebase_auth: ^4.1.3 
   firebase_core: ^2.3.0
   cloud_firestore: ^4.1.0
   provider:
+  excel: ^2.1.0
+
+  #Animations
   delayed_display: ^2.0.0
   flip_card:
   animated_text_kit: ^4.2.2
   flutter_staggered_animations: ^1.1.1
+  infinite_carousel: ^1.0.2
+  
+  web_smooth_scroll: ^1.1.0
+
+  #Utility
   widget_mask: ^1.0.0+0
+  drop_shadow: ^0.1.0
   flutter_svg: ^2.0.5
-  excel: ^2.1.0
   interactable_svg: ^0.0.3
   responsive_spacing: ^0.2.2
   city_picker_from_map: ^0.0.1
   flutter_timer_countdown: ^1.0.5
-  infinite_carousel: ^1.0.2
-  web_smooth_scroll: ^1.1.0
+  url_launcher: ^6.1.10
+  image_network: ^2.5.2
 
 
   # The following adds the Cupertino Icons font to your application.

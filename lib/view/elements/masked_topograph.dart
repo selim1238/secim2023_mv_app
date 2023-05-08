@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secim2023_mv_app/core/constants/constants.dart';
 import 'package:widget_mask/widget_mask.dart';
 
 class MaskedTopographWidget extends StatelessWidget {
@@ -20,8 +21,8 @@ class MaskedTopographWidget extends StatelessWidget {
         curve: Curves.easeInOut,
         height: (screenHeight + screenWidth) * 1,
         width: (screenHeight + screenWidth) * 1,
-        right: screenWidth * -0.2,
-        top: screenWidth * -1.12,
+        bottom: screenHeight * 1.3,
+        right: screenWidth * -0.25,
         child: RotationTransition(
           turns: Tween(begin: 0.0, end: 1.0).animate(_spinAnimationController),
           child: WidgetMask(
@@ -38,7 +39,7 @@ class MaskedTopographWidget extends StatelessWidget {
             ),
             child: Container(
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 102, 0),
+                  color: CustomColors().customPanelColor,
                   borderRadius: BorderRadius.circular(1500)),
             ),
           ),

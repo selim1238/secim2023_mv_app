@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secim2023_mv_app/core/constants/constants.dart';
 import 'package:secim2023_mv_app/core/init/provider/state_provider.dart';
+import 'package:secim2023_mv_app/testino.dart';
+import 'package:secim2023_mv_app/utility/horizontal_scroll.dart';
+import 'package:secim2023_mv_app/view/deputy_info/deputy_info_main.dart';
 import 'package:secim2023_mv_app/view/main_view.dart';
 import 'package:secim2023_mv_app/view/turkey_map.dart';
 
@@ -23,6 +26,7 @@ class AppHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       title: '2023 Milletvekilleri Aday Portalı',
       theme: ThemeData(

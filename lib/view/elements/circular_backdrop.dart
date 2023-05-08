@@ -17,8 +17,8 @@ class CircularBackgroundBackdrop extends StatelessWidget {
         curve: Curves.easeInOut,
         height: (screenHeight + screenWidth) * 1,
         width: (screenHeight + screenWidth) * 1,
-        right: screenWidth * -0.2,
-        top: screenWidth * -1.1,
+        bottom: screenHeight * 1.25,
+        right: screenWidth * -0.25,
         child: Container(
           decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.1),
