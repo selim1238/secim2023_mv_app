@@ -76,8 +76,8 @@ class DeputyCardStyler {
       default:
         return LinearGradient(
             colors: [
-              Color(0xFFF90000).withOpacity(0.9),
-              Color(0xFFF90000).withOpacity(0.7),
+              Color(0xFF32B5FF).withOpacity(0.9),
+              Color(0xFF32B5FF).withOpacity(0.7),
               Colors.transparent
             ],
             begin: Alignment.topCenter,

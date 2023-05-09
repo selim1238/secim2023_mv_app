@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:secim2023_mv_app/core/constants/constants.dart';
 import 'package:widget_mask/widget_mask.dart';
+
+import '../../core/constants/custom_colors.dart';
 
 class MaskedTopographWidget extends StatelessWidget {
   const MaskedTopographWidget({

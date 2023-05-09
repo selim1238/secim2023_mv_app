@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secim2023_mv_app/core/init/provider/state_provider.dart';
 import 'package:secim2023_mv_app/view/deputy_info/deputy_info_main.dart';
+import 'package:secim2023_mv_app/view/state_info/area_selector.dart';
 
-import '../../core/constants/constants.dart';
+import '../../core/constants/custom_colors.dart';
 
 class StateInfo extends StatefulWidget {
   const StateInfo({super.key});
@@ -91,7 +92,7 @@ class _StateInfoState extends State<StateInfo> {
                                   child: Icon(
                                     Icons.group,
                                     color: CustomColors().customTextColor,
-                                    size: 20,
+                                    size: 18,
                                   ),
                                 ),
                                 Text(
@@ -104,13 +105,13 @@ class _StateInfoState extends State<StateInfo> {
                               ],
                             ),
                             SizedBox(
-                              height: 5,
+                              height: 2,
                             ),
                             Text(
                               provider.selectedCityDeputyCount.toString(),
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
                           ],
@@ -143,7 +144,7 @@ class _StateInfoState extends State<StateInfo> {
                                   child: Icon(
                                     Icons.view_carousel,
                                     color: CustomColors().customTextColor,
-                                    size: 20,
+                                    size: 18,
                                   ),
                                 ),
                                 Text(
@@ -162,7 +163,7 @@ class _StateInfoState extends State<StateInfo> {
                               provider.selectedCityAreaCount.toString(),
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 20,
+                                fontSize: 15,
                               ),
                             ),
                           ],
@@ -172,37 +173,25 @@ class _StateInfoState extends State<StateInfo> {
                 SizedBox(
                   height: screenHeight * 0.01,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DeputyInfoMain(
-                                areaName: provider.selectedCity,
-                                areaDb: provider.selectedCityDb)),
-                      );
-                    },
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      width: MediaQuery.of(context).size.width * 0.1,
-                      decoration: BoxDecoration(
-                          color: CustomColors()
-                              .customBackgroundColor
-                              .withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Center(
-                          child: Text("Milletvekillerini Gör",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12)),
-                        ),
-                      ),
-                    ),
-                  ),
-                )
+                provider.selectedCity == "İstanbul"
+                    ? IstanbulDeputiesHandler()
+                    : Container(),
+                provider.selectedCity == "Ankara"
+                    ? AnkaraDeputiesHandler()
+                    : Container(),
+                provider.selectedCity == "İzmir"
+                    ? IzmirDeputiesHandler()
+                    : Container(),
+                provider.selectedCity == "Bursa"
+                    ? BursaDeputiesHandler()
+                    : Container(),
+                //Other Cities
+                provider.selectedCity != "İstanbul" &&
+                        provider.selectedCity != "Ankara" &&
+                        provider.selectedCity != "İzmir" &&
+                        provider.selectedCity != "Bursa"
+                    ? AreaDeputiesHandler()
+                    : Container(),
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_timer_countdown/flutter_timer_countdown.dart';
@@ -8,7 +9,6 @@ import 'package:infinite_carousel/infinite_carousel.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_spacing/extensions/scaled_size_extension.dart';
 import 'package:responsive_spacing/widgets/spacing.dart';
-import 'package:secim2023_mv_app/core/constants/constants.dart';
 import 'package:secim2023_mv_app/core/init/provider/state_provider.dart';
 import 'package:secim2023_mv_app/view/state_info/state_info.dart';
 import 'package:secim2023_mv_app/view/turkey_map.dart';
@@ -21,6 +21,7 @@ import "./elements/ballot_box.dart";
 import 'package:web_smooth_scroll/web_smooth_scroll.dart';
 import 'elements/welcome_titles.dart';
 import "../main_excel.dart";
+import "dart:html" as html;
 
 class MainView extends StatefulWidget {
   const MainView({super.key});
@@ -194,7 +195,11 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                               width: screenWidth * 0.9,
                               child: Stack(
                                 children: [
-                                  Center(child: TurkeyMap()),
+                                  Center(
+                                      child: Container(
+                                          height: screenHeight * 0.45,
+                                          width: screenWidth * 0.5,
+                                          child: TurkeyMap())),
                                   Center(
                                     child: Container(
                                       height: screenHeight * 0.45,
@@ -274,7 +279,105 @@ class _MainViewState extends State<MainView> with TickerProviderStateMixin {
                     ),
                   ],
                 ),
-              )
+              ),
+              Container(
+                height: screenHeight * 2,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                      height: screenHeight * 0.3,
+                      width: screenWidth,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 18, 119, 192),
+                              Color.fromARGB(255, 4, 31, 48)
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter),
+                      ),
+                      child: Center(
+                        child: Container(
+                          height: screenHeight * 0.25,
+                          width: screenWidth * 0.3,
+                          child: Column(children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                    child: Column(
+                                  children: [
+                                    Text("Developer",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18)),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        html.window.open(
+                                            "https://github.com/selim1238",
+                                            "Github");
+                                      },
+                                      child: Text("Selim Köşgen",
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 8, 216, 243),
+                                              fontSize: 18)),
+                                    ),
+                                  ],
+                                )),
+                                Container(
+                                    child: Column(
+                                  children: [
+                                    Text("Resource Provider - Designer",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 18)),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text("Gökçe Ertürk",
+                                        style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 8, 216, 243),
+                                            fontSize: 18)),
+                                  ],
+                                )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Text("Idea",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                html.window.open(
+                                    "https://twitter.com/10VBacik", "Twitter");
+                              },
+                              child: Text("10VBacik - Veli Bacık",
+                                  style: TextStyle(
+                                      color: Color.fromARGB(255, 8, 216, 243),
+                                      fontSize: 18)),
+                            ),
+                            Flexible(
+                              child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Text(
+                                    "2023 Milletvekilleri Aday Portalı",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
+                                  )),
+                            ),
+                          ]),
+                        ),
+                      )),
+                ),
+              ),
             ],
           ),
         ),
@@ -298,7 +401,7 @@ class PartyCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: screenHeight * 0.14,
+      height: screenHeight * 0.13,
       width: screenWidth,
       decoration: BoxDecoration(
           color: Color(0xFFC0EEF2).withOpacity(0.5),
@@ -317,8 +420,8 @@ class PartyCarousel extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(20.0),
             child: Container(
-              height: 100,
-              width: 100,
+              height: screenHeight * 0.09,
+              width: screenWidth * 0.5,
               child:
                   Image.network(PartyLogos().networkLogos.elementAt(itemIndex)),
             ),

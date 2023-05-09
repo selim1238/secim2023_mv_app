@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../main_excel.dart';
+
 class BallotBox extends StatelessWidget {
   const BallotBox({
     super.key,
@@ -21,13 +23,18 @@ class BallotBox extends StatelessWidget {
       height: (screenHeight + screenWidth) * 0.05,
       width: (screenHeight + screenWidth) * 0.05,
       child: Center(
-        child: Container(
-          height: (screenHeight + screenWidth) * 0.05,
-          width: (screenHeight + screenWidth) * 0.05,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
+        child: InkWell(
+          onTap: () {
+            MilletvekiliInits().readExcel();
+          },
+          child: Container(
+            height: (screenHeight + screenWidth) * 0.05,
+            width: (screenHeight + screenWidth) * 0.05,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Center(child: Image.asset("assets/ballot_box.png")),
           ),
-          child: Center(child: Image.asset("assets/ballot_box.png")),
         ),
       ),
     );
