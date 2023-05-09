@@ -6,7 +6,6 @@ import 'package:secim2023_mv_app/core/constants/custom_colors.dart';
 import 'package:secim2023_mv_app/core/constants/party_logos.dart';
 import '../../core/db_init/db_init.dart';
 import 'deputy_card_styler.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'deputy_error_handler.dart';
 
@@ -20,14 +19,6 @@ class DeputyInfoMain extends StatefulWidget {
 }
 
 class _DeputyInfoMainState extends State<DeputyInfoMain> {
-  void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url, forceSafariVC: false, forceWebView: false);
-    } else {
-      throw 'Sayfa Açılamadı $url';
-    }
-  }
-
   final scrollController = ScrollController();
 
   @override
